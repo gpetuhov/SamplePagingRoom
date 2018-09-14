@@ -3,6 +3,8 @@
 buildscript {
     ext.kotlinVersion = '1.3-M2'
     ext.ankoVersion = '0.10.5'
+    ext.roomVersion = "2.0.0-rc01"
+    ext.pagingVersion = "2.0.0-rc01"
 
     // Version of coroutines must end with -eap13 to be used with Kotlin 1.3
     ext.coroutinesVersion = '0.26.0-eap13'
