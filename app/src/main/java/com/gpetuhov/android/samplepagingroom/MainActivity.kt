@@ -3,14 +3,22 @@ package com.gpetuhov.android.samplepagingroom
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.edit
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.gpetuhov.android.samplepagingroom.adapter.UserAdapter
 import com.gpetuhov.android.samplepagingroom.models.User
+import com.gpetuhov.android.samplepagingroom.models.UsersViewModel
 import com.gpetuhov.android.samplepagingroom.room.UserDatabase
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.defaultSharedPreferences
 import javax.inject.Inject
+import androidx.recyclerview.widget.LinearLayoutManager
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dataBase: UserDatabase
 
+    private lateinit var viewModel: UsersViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,6 +40,17 @@ class MainActivity : AppCompatActivity() {
 
         // Init database with dummy data on first run
         initDummyData()
+
+        val mLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = mLayoutManager
+
+        val adapter = UserAdapter(this)
+        recyclerView.adapter = adapter
+
+        viewModel = ViewModelProviders.of(this).get(UsersViewModel::class.java)
+        viewModel.usersLiveData.observe(this, Observer { names ->
+            if (names != null) adapter.submitList(names)
+        })
     }
 
     private fun initDummyData() {
