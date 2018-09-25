@@ -35,7 +35,7 @@ class UsersViewModel constructor(application: Application) : AndroidViewModel(ap
                     override fun onZeroItemsLoaded() {
                         super.onZeroItemsLoaded()
                         Log.d(TAG, "Empty data source!")
-                        insertDummyData()
+                        insertDummyData(0)
                     }
 
                     // This method is called, when the DataSource reaches the end
@@ -46,7 +46,9 @@ class UsersViewModel constructor(application: Application) : AndroidViewModel(ap
                     override fun onItemAtEndLoaded(itemAtEnd: User) {
                         super.onItemAtEndLoaded(itemAtEnd)
                         Log.d(TAG, "End of data!")
-                        insertDummyData()
+
+                        // itemAtEnd can be used as the starting point for the next portion of data
+                        insertDummyData(itemAtEnd.id)
                     }
                 })
 
@@ -54,12 +56,12 @@ class UsersViewModel constructor(application: Application) : AndroidViewModel(ap
     }
 
     // Instead of filling the database with dummy data, network request should be triggered here
-    private fun insertDummyData() {
+    private fun insertDummyData(startNumber: Int) {
         GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
             delay(3000)
 
             val dummyData = List(500) {
-                User("User name $it")
+                User("User name ${startNumber + it}")
             }
 
             dataBase.userDao().insertAll(dummyData)
