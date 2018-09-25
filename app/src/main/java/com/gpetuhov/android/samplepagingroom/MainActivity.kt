@@ -3,7 +3,6 @@ package com.gpetuhov.android.samplepagingroom
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.edit
-import androidx.room.Room
 import com.gpetuhov.android.samplepagingroom.models.User
 import com.gpetuhov.android.samplepagingroom.room.UserDatabase
 import kotlinx.coroutines.CoroutineStart
@@ -11,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.defaultSharedPreferences
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,14 +19,14 @@ class MainActivity : AppCompatActivity() {
         const val FIRST_RUN = "first_run_flag"
     }
 
-    private lateinit var dataBase: UserDatabase
+    @Inject
+    lateinit var dataBase: UserDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // This should be injected with Dagger, but we init it here for simplicity
-        dataBase = Room.databaseBuilder(this, UserDatabase::class.java, "user_database").build()
+        SamplePagingRoomApp.appComponent.inject(this)
 
         // Init database with dummy data on first run
         initDummyData()
