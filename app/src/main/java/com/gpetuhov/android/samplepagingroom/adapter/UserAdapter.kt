@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gpetuhov.android.samplepagingroom.R
 import com.gpetuhov.android.samplepagingroom.models.User
 
+// For the paged list we need special kind of adapter that extends PagedListAdapter
 class UserAdapter(val context: Context) : PagedListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback()) {
 
     override fun onBindViewHolder(holderUser: UserViewHolder, position: Int) {
-        var person = getItem(position)
+        val person = getItem(position)
 
         if (person == null) {
             holderUser.clear()

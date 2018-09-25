@@ -41,12 +41,15 @@ class MainActivity : AppCompatActivity() {
         // Init database with dummy data on first run
         initDummyData()
 
+        // Init recycler view
         val mLayoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = mLayoutManager
 
+        // Set adapter for the recycler view
         val adapter = UserAdapter(this)
         recyclerView.adapter = adapter
 
+        // Subscibe to ViewModel changes
         viewModel = ViewModelProviders.of(this).get(UsersViewModel::class.java)
         viewModel.usersLiveData.observe(this, Observer { names ->
             if (names != null) adapter.submitList(names)
@@ -56,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     private fun initDummyData() {
         val isFirstRun = defaultSharedPreferences.getBoolean(FIRST_RUN, true)
 
+        // If first run, init database with dummy data
         if (isFirstRun) {
             defaultSharedPreferences.edit {
                 putBoolean(FIRST_RUN, false)

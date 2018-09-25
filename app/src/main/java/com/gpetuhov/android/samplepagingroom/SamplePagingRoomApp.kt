@@ -4,6 +4,7 @@ import android.app.Application
 import com.gpetuhov.android.samplepagingroom.dagger.AppComponent
 import com.gpetuhov.android.samplepagingroom.dagger.DaggerAppComponent
 
+// Application class keeps Dagger component
 class SamplePagingRoomApp : Application() {
 
     companion object {

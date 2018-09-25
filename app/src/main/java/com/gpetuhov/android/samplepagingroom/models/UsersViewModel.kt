@@ -10,6 +10,7 @@ import com.gpetuhov.android.samplepagingroom.SamplePagingRoomApp
 import com.gpetuhov.android.samplepagingroom.room.UserDatabase
 import javax.inject.Inject
 
+// ViewModel provides paged list for the MainActivity
 class UsersViewModel constructor(application: Application)
     : AndroidViewModel(application) {
 
